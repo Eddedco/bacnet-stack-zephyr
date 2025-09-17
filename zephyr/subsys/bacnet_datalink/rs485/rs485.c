@@ -5,9 +5,9 @@
  * @date January 2025
  * @copyright SPDX-License-Identifier: Apache-2.0
  */
-#if !defined(CONFIG_UART_ASYNC_API)
-#error "RS485 driver requires CONFIG_UART_ASYNC_API to be defined!"
-#endif
+// #if !defined(CONFIG_UART_ASYNC_API)
+// #error "RS485 driver requires CONFIG_UART_ASYNC_API to be defined!"
+// #endif
 
 #if !defined(CONFIG_RING_BUFFER)
 #error "RS485 driver requires CONFIG_RING_BUFFER to be defined!"
@@ -227,6 +227,8 @@ int32_t bacnet_driver_rs485_enable(struct bacnet_driver_rs485 *context)
 	uint8_t c;
 
 	if ((context != NULL) && (!context->enabled)) {
+		ring_buf_init(&context->rb_tx, sizeof(context->rb_tx_buffer),
+	              context->rb_tx_buffer);
 		ring_buf_init(&context->rb_rx, sizeof(context->rb_rx_buffer),
 			      context->rb_rx_buffer);
 		context->transmitting = false;
